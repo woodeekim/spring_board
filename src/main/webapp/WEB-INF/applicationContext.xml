@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
 
+    <!--Hikari DBCP 를 사용하기 위해서 필요한 설정-->
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <!--<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>-->
+        <!--<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE"></property>-->
+        <!--log4jdbc를 쓰기위해 추가-->
+        <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+        <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"></property>
+        <property name="username" value="spring_board"></property>
+        <property name="password" value="1111"></property>
+    </bean>
+
+    <!--HikariCP configuration / 아마도 HikariDataSource 클래스의 생성자가 HikariConfig 를 매개변수로 받는 다는 말같다(?)-->
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfig" />
+    </bean>
+
+    <!--mybatis가 아니라 스프링과 mybatis 연동 작업을 하는 라이브러리다.
+     SqlSessionFactoryBeen 이 중요한 역할인데 멤버필드인 dataSource 의 값을
+     hikari의 DataSouce 로 한다는 말같다 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <mybatis-spring:scan base-package="org.woodee.mapper"/>
+    <context:component-scan base-package="org.woodee.sample"/>
 </beans>

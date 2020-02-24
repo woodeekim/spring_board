@@ -1,0 +1,33 @@
+2020-02-24 03:51:50 INFO  SampleTests:24 - Restaurant(chef=Chef())
+2020-02-24 03:51:50 INFO  SampleTests:25 - ---------------------
+2020-02-24 03:51:50 INFO  SampleTests:26 - Chef()
+2020-02-24 03:54:10 INFO  SampleTests:24 - Restaurant(chef=Chef())
+2020-02-24 03:54:10 INFO  SampleTests:25 - ---------------------
+2020-02-24 03:54:10 INFO  SampleTests:26 - Chef()
+2020-02-24 04:03:28 INFO  HotelTests:24 - SampleHotel(chef=Chef())
+2020-02-24 04:03:28 INFO  HotelTests:25 - -----------------
+2020-02-24 04:03:28 INFO  HotelTests:26 - Chef()
+2020-02-24 04:04:59 INFO  HotelTests:24 - SampleHotel(chef=Chef())
+2020-02-24 04:04:59 INFO  HotelTests:25 - -----------------
+2020-02-24 04:04:59 INFO  HotelTests:26 - Chef()
+2020-02-24 04:20:21 INFO  JDBCTests:27 - oracle.jdbc.driver.T4CConnection@6989da5e
+2020-02-24 04:47:49 INFO  DataSourceTests:27 - HikariProxyConnection@216376974 wrapping oracle.jdbc.driver.T4CConnection@522a32b1
+2020-02-24 05:07:48 INFO  DataSourceTests:34 - org.apache.ibatis.session.defaults.DefaultSqlSession@39c11e6c
+2020-02-24 05:07:48 INFO  DataSourceTests:35 - HikariProxyConnection@843959601 wrapping oracle.jdbc.driver.T4CConnection@2374d36a
+2020-02-24 16:52:13 INFO  TimeMapperTests:22 - 2020-02-24 16:52:13
+2020-02-24 16:52:13 INFO  TimeMapperTests:23 - class com.sun.proxy.$Proxy23
+2020-02-24 16:53:07 INFO  TimeMapperTests:22 - 2020-02-24 16:53:07
+2020-02-24 16:53:08 INFO  TimeMapperTests:23 - class com.sun.proxy.$Proxy23
+2020-02-24 16:59:21 INFO  TimeMapperTests:22 - 2020-02-24 16:59:20
+2020-02-24 16:59:21 INFO  TimeMapperTests:23 - class com.sun.proxy.$Proxy23
+2020-02-24 17:00:57 INFO  TimeMapperTests:22 - 2020-02-24 17:00:56
+2020-02-24 17:00:57 INFO  TimeMapperTests:23 - class com.sun.proxy.$Proxy23
+2020-02-24 17:17:53 INFO  TimeMapperTests:28 - ---xml + 인터페이스로 한 getTime2----
+2020-02-24 17:22:54 INFO  TimeMapperTests:22 - 2020-02-24 17:22:54
+2020-02-24 17:22:54 INFO  TimeMapperTests:23 - class com.sun.proxy.$Proxy23
+2020-02-24 17:25:59 INFO  TimeMapperTests:28 - ---xml + 인터페이스로 한 getTime2----
+2020-02-24 17:29:15 INFO  TimeMapperTests:28 - ---xml + 인터페이스로 한 getTime2----
+2020-02-24 17:29:15 INFO  TimeMapperTests:29 - 2020-02-24 17:29:15
+2020-02-24 17:40:39 INFO  TimeMapperTests:28 - ---xml + 인터페이스로 한 getTime2----
+2020-02-24 17:40:39 INFO  TimeMapperTests:29 - 2020-02-24 17:40:39
+2020-02-24 17:41:01 INFO  JDBCTests:27 - oracle.jdbc.driver.T4CConnection@6f4a47c7
