@@ -1,6 +1,7 @@
 package org.woodee.sample;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/applicationContext.xml")
-@Log4j
+@Log4j2
 public class SampleTests {
 
     @Setter(onMethod_ = {@Autowired} )

@@ -1,6 +1,7 @@
 package org.woodee.persistence;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import java.sql.Connection;
 import static org.junit.Assert.fail;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/applicationContext.xml")
-@Log4j
+@Log4j2
 public class DataSourceTests {
     @Setter(onMethod_ ={@Autowired} )
     private DataSource dataSource;

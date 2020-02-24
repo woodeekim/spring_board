@@ -101,11 +101,27 @@
         </dependency>
 
         <!--요즘에는 log4j2 를 정식적으로 지원하는거 같은데..-->
-        <dependency>
+      <!--  <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
+
+-->
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.11.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.11.2</version>
+        </dependency>
+
+
         <!--SQL에 전달되는 파라미터는 JDBC 에서 ?로 치환되어서 처리 되는데 ? 값을 어떤 값으로
             처리 되는지 보는 라이브러리다. 근데 너무 옛날거인데 아직도 이걸 쓰나?
        -->

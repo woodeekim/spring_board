@@ -12,11 +12,12 @@
                    value="\u001b[0;%X{randColor}m ....... \u001b[m" />
         </layout>
     </appender>
-   <!--  Application Loggers-->
+    <!--
+   &lt;!&ndash;  Application Loggers&ndash;&gt;
     <logger name="org.woodee.controller">
         <level value="info" />
     </logger>
-    <!-- 3rdparty Loggers -->
+    &lt;!&ndash; 3rdparty Loggers &ndash;&gt;
     <logger name="org.springframework.core">
         <level value="info" />
     </logger>
@@ -32,15 +33,7 @@
     <logger name="org.springframework.web">
         <level value="info" />
     </logger>
-    <logger name="jdbc.audit">
-        <level value="warn"/>
-    </logger>
-    <logger name="jdbc.resultset">
-        <level value="warn"/>
-    </logger>
-    <logger name="jdbc.connection">
-        <level value="warn"/>
-    </logger>
+-->
 
     <!-- Root Logger -->
     <root>
