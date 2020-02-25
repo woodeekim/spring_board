@@ -6,9 +6,20 @@
 
     <mvc:annotation-driven/>
     <context:component-scan base-package="org.woodee.controller"/>
+    <context:component-scan base-package="org.woodee.exception"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/views/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
+
+    <!--이미지 업로드를 위한 bean 설정-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+        <property name="maxUploadSize" value="104857560"></property>
+        <property name="maxUploadSizePerFile" value="2097152"></property>
+        <property name="uploadTempDir" value="file:/C:/upload/tmp"></property>
+        <property name="maxInMemorySize" value="10485756"></property>
+    </bean>
+
 </beans>
