@@ -8,10 +8,8 @@
     <artifactId>spring-board</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
     <build>
         <plugins>
-
             <!--IntelliJ는 기본적으로 1.5로 되어있어서 안바꾸면 에러-->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -37,7 +35,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <!-- Spring 필수 -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -52,21 +49,18 @@
             <artifactId>mybatis</artifactId>
             <version>3.5.4</version>
         </dependency>
-
         <!-- mybatis 필수 (2/4)  -->
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
             <version>2.0.3</version>
         </dependency>
-
         <!-- mybatis 필수 (3/4) / mybatis 와 관련없어 보이지만 없을 경우 에러  -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
             <version>5.2.3.RELEASE</version>
         </dependency>
-
         <!-- mybatis 필수 (4/4) / mybatis 와 관련없어 보이지만 없을 경우 에러  -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -81,9 +75,6 @@
             <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
-
-
-
 
         <!--Lombok 라이브러리 / Lombok이 해주는 역할은 getter, setter, 생성자등 자수 사용하는 메소드를 자동으로 생성해준다.-->
         <dependency>
@@ -107,7 +98,6 @@
             <version>2.10.2</version>
         </dependency>
 
-
         <!--요즘에는 log4j2 를 정식적으로 지원하는거 같은데..-
            ->현재 지원하지 않는 log4j를 github에 올리니 github 의존성 검사를 통해 바꾸라른
            알람이 왔다. 앞으로도 지원하지 않는 라이브러리는 사용하지 말자.
@@ -124,7 +114,6 @@
             <artifactId>log4j-api</artifactId>
             <version>2.11.2</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -138,14 +127,12 @@
             <version>1.4</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+        <!--jsp 페이지에서 jstl(jsp standard tag library) 을 쓰기 위해서-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-
-
 
         <!--SQL에 전달되는 파라미터는 JDBC 에서 ?로 치환되어서 처리 되는데 ? 값을 어떤 값으로
             처리 되는지 보는 라이브러리다. 근데 너무 옛날거인데 아직도 이걸 쓰나?
