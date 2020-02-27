@@ -8,7 +8,6 @@
         <div class="panel panel-default">
             <div class="panel-heading">글 등록</div>
             <div class="panel-body">
-                <form role="form" action="/board/register" method="post">
                     <div class="form-group">
                         <label>Bno</label><input class="form-control" name="bno" value="${board.bno}" readonly="readonly">
                     </div>
@@ -22,13 +21,51 @@
                     <div class="form-group">
                         <label>Writer</label><input class="form-control" name="writer" value="${board.writer}" readonly="readonly">
                     </div>
-                    <button data-oper="modify" class="btn btn-default" onclick="location.href='/board/modify?bno=<c:out value="{board.bno}"/>'">수정</button>
-                    <button data-oper="list" class="btn btn-default" onclick="location.href='/board/list'">목록</button>
+
+                    <button data-oper="modify" class="btn btn-default">수정</button>
+                    <button data-oper="list" class="btn btn-info">목록</button>
+                <form id="operForm" action="/board/modify" method="get">
+                    <input type="hidden" id="bno" name="bno" value="<c:out value='${board.bno}'/>">
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    //form 안에 input type을 hidden 으로 파라미터 보내는 첫번째 방법
+    $(document).ready(function () {
+        var operForm = $("#operForm");
+        $("button[data-oper='modify']").on("click",function (e) {
+            e.preventDefault();
+            operForm.attr("action","/board/modify").submit();
+        });
+
+        $("button[data-oper='list']").on("click",function (e) {
+            e.preventDefault();
+            operForm.find("#bno").remove();
+            operForm.attr("action","/board/list").submit();
+
+        })
+    });
+    //data-set 속성을 이용한 파라미터 보내는 두번째 방법
+        /*onclick 이벤트를 쓰지 않고(HTML과 CSS분리) script 에서 Model이 보내준 bno를 받아서 처리*/
+        /*
+        var bno = '
+        <%--<c:out value="${board.bno}--%>"/>';
+        $("button").on("click",function () {
+            var operation = $(this).data("oper");
+            console.log(operation);
+            if(operation === 'modify'){
+                self.location='/board/modify?bno='+bno;
+            } else if(operation === 'list'){
+                self.location='/board/list';
+                return;
+            }
+        });
+    });
+    */
+
+</script>
 <%@ include file="../includes/footer.jsp"%>
 </body>
 </html>
