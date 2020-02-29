@@ -31,7 +31,7 @@ public class BoardMapperTests {
 
         //10개씩 3페이지
         //즉 첫페이지는 (pageNum-1) * amount 니까 rn > 20 이다.
-        cri.setPageNum(3);
+        cri.setPageNum(4);
         cri.setAmount(10);
 
         List<BoardVO> list = boardMapper.getListWithPaging(cri);

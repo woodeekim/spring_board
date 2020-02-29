@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.woodee.domain.BoardVO;
+import org.woodee.domain.Criteria;
 
 import java.util.List;
 
@@ -64,7 +65,8 @@ public class BoardServiceTests {
 
     @Test
     public void getList() {
-        List<BoardVO> list = service.getList();
-        service.getList().forEach(board -> log.info(board));
+        //service.getList().forEach(board -> log.info(board));
+        service.getList(new Criteria(2,10)).forEach(board -> log.info(board));
+
     }
 }

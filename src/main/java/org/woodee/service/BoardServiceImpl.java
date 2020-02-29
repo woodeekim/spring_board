@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.woodee.domain.BoardVO;
+import org.woodee.domain.Criteria;
 import org.woodee.mapper.BoardMapper;
 
 import java.util.List;
@@ -39,9 +40,16 @@ public class BoardServiceImpl implements BoardService {
         return mapper.delete(bno)==1;
     }
 
-    @Override
+
+    /*@Override
     public List<BoardVO> getList() {
         log.info("getList.......");
         return mapper.getList();
+    }
+*/
+    @Override
+    public List<BoardVO> getList(Criteria cri) {
+        log.info("get List with criteria: " + cri);
+        return mapper.getListWithPaging(cri);
     }
 }

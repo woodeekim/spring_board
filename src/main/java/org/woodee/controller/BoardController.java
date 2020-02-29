@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.woodee.domain.BoardVO;
+import org.woodee.domain.Criteria;
 import org.woodee.service.BoardService;
 
 import java.util.List;
@@ -24,11 +25,20 @@ public class BoardController {
 
     private BoardService service;
 
-    @GetMapping("/list")
+    //페이징 처리 없는 조회
+    /*@GetMapping("/list")
     public void list(Model model){
         log.info("list");
         model.addAttribute("list",service.getList());
+    }*/
+
+    @GetMapping("/list")
+    public void getList(Criteria cri, Model model) {
+        log.info("list" + cri);
+        model.addAttribute("list", service.getList(cri));
     }
+
+
     @GetMapping("/register")
     public void register(){
 

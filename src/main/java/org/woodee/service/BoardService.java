@@ -1,6 +1,7 @@
 package org.woodee.service;
 
 import org.woodee.domain.BoardVO;
+import org.woodee.domain.Criteria;
 
 import java.util.List;
 
@@ -14,6 +15,10 @@ public interface BoardService
     public boolean modify(BoardVO board);
     //삭제
     public boolean remove(Long bno);
+
     //리스트 조회
-    public List<BoardVO> getList();
+    //public List<BoardVO> getList();
+    //리스트 조회(페이징처리)
+    public List<BoardVO> getList(Criteria cri);
+
 }
