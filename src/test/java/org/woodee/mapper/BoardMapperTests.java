@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.woodee.domain.BoardVO;
+import org.woodee.domain.Criteria;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -21,6 +24,19 @@ public class BoardMapperTests {
 
     @Setter(onMethod_ = {@Autowired} )
     private BoardMapper boardMapper;
+
+    @Test
+    public void testPaging() {
+        Criteria cri = new Criteria();
+
+        //10개씩 3페이지
+        //즉 첫페이지는 (pageNum-1) * amount 니까 rn > 20 이다.
+        cri.setPageNum(3);
+        cri.setAmount(10);
+
+        List<BoardVO> list = boardMapper.getListWithPaging(cri);
+        list.forEach(board -> log.info(board.getBno()));
+    }
 
     @Test
     public void testGetList() {
