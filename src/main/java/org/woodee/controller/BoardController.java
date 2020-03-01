@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.woodee.domain.BoardVO;
 import org.woodee.domain.Criteria;
+import org.woodee.domain.PageDTO;
 import org.woodee.service.BoardService;
 
 import java.util.List;
@@ -36,6 +37,8 @@ public class BoardController {
     public void getList(Criteria cri, Model model) {
         log.info("list" + cri);
         model.addAttribute("list", service.getList(cri));
+        //현재 total 에 대한 로직이 없기 때문에 임시의 값 123 설정
+        model.addAttribute("pageMaker", new PageDTO(cri, 123 ));
     }
 
 
