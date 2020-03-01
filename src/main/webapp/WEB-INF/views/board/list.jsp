@@ -40,7 +40,7 @@
                             <tbody>
                             <tr class="odd gradeX">
                                 <td><c:out value="${board.bno}"/></td>
-                                <td><a href="/board/get?bno=<c:out value='${board.bno}'/>"><c:out value="${board.title}"/></a></td>
+                                <td><a class="move" href="<c:out value='${board.bno}'/>"><c:out value="${board.title}"/></a></td>
                                 <td><c:out value="${board.content}"/></td>
                                 <td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}"/></td>
                                 <td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.updatedate}"/></td>
@@ -49,11 +49,13 @@
                             </tbody>
                         </table>
                         <!-- /.table-responsive -->
+                        <%--a요소로 페이지가 넘어가지 않게 막고 파라미터를 넘겨주기 위함--%>
+
                         <div class="pull-right">
                             <ul class="pagination">
                                 <c:if test="${pageMaker.prev}">
                                     <li class="paginate_button previous">
-                                        <a href="${pageMaker.startPage-1}">이전</a>
+                                        <a href="${pageMaker.startPage -1}">이전</a>
                                     </li>
                                 </c:if>
 
@@ -66,17 +68,13 @@
 
                                 <c:if test="${pageMaker.next}">
                                     <li class="paginate_button next">
-                                        <a href="${pageMaker.endPage+1}">다음</a>
+                                        <a href="${pageMaker.endPage +1}">다음</a>
                                     </li>
                                 </c:if>
                             </ul>
                         </div>
 
-                        <%--a요소로 페이지가 넘어가지 않게 막고 파라미터를 넘겨주기 위함--%>
-                        <form id="actionForm" action="/board/list" method="get">
-                            <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
-                            <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-                        </form>
+
 
                         <!-- Modal 추가 -->
                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -108,10 +106,15 @@
             </div>
             <!-- /.col-lg-12 -->
     <!-- /#page-wrapper -->
+    <form id="actionForm" action="/board/list" method="get">
+        <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}" >
+        <input type="hidden" name="amount" value="${pageMaker.cri.amount}" >
+    </form>
     <script type="text/javascript">
         $(document).ready(function(){
             var result = '<c:out value="${result}"/>';
             var actionForm =$("#actionForm");
+
 
             checkModal(result);
 
@@ -129,16 +132,28 @@
             $("#regBtn").on("click",function(){
                 self.location = "/board/register";
             });
-            /*//페이징처리 이벤트
+            //페이징처리 이벤트 처리
             $(".paginate_button a").on("click", function (e) {
                 e.preventDefault();
                 console.log('click');
-
                 //클릭한 this 객체의 href 속성값을 input의 value에 대입하고 submit 시킨다.
                 actionForm.find("input[name='pageNum']").val($(this).attr("href"));
-                //actionForm.submit();
+                actionForm.submit();
+            });
+            //게시글 눌렀을 때 이벤트 처리 (pageNum과 amount 파라미터를 넘기기위함)
+            //why? 게시글에서 목록을 클릭하면 1페이지로 돌아가기 때문
+            $(".move").on("click", function (e) {
+                e.preventDefault();
+                //이벤트처리를 form 태그 하나로 다룬다는거 알아두자
+                actionForm.append("<input type='hidden' name='bno' value='"+$(this).attr("href")+"'>");
+                actionForm.attr("action", "/board/get");
+                actionForm.submit();
 
-            });*/
+            })
+
+
+
+
 
         });
     </script>

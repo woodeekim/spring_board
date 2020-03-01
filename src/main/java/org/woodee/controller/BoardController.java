@@ -38,6 +38,10 @@ public class BoardController {
         log.info("list" + cri);
         model.addAttribute("list", service.getList(cri));
         //현재 total 에 대한 로직이 없기 때문에 임시의 값 123 설정
+        //생각해보니 pageNo와 amount가 1,10으로 초기화한 Criteria를 PageDTO의 파라미터로 받고 생성해서
+        //Model 에 담아서 View 로 전달해서 /board/list?pageNum에 있는게 아니라
+        //그냥 list 인데 내가 페이징을 누를 때 파라미터를 보내나보다.
+        //결론: hidden 타입으로 form 안에 있는 pageNum, amount 를 파라미터로 보내기 때문이다.
         model.addAttribute("pageMaker", new PageDTO(cri, 123 ));
     }
 
