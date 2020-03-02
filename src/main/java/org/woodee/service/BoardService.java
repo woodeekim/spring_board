@@ -21,4 +21,6 @@ public interface BoardService
     //리스트 조회(페이징처리)
     public List<BoardVO> getList(Criteria cri);
 
+    public int getTotal(Criteria cri);
+
 }
