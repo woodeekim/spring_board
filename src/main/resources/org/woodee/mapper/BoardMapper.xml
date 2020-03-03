@@ -5,14 +5,28 @@
 
 <mapper namespace="org.woodee.mapper.BoardMapper">
 
-    <!--
-    rownum을 이용하면 1부터 구할 수 있다. 즉 11~20을 바로 못 구한다.
-    그래서 인라인뷰를 이용해 1~20 을 구한뒤 필요한 페이징 처리를 한다.
-    인라인뷰에서는 rownum 의 기준을 pageNum(몇페이지로 나타낼건지) * amount(페이지당 몇개 나타낼건지)
-    테이블 where 절에서는 rownum 을 (pageNum-1) * amount 로 한다.
-    -->
+    <!--목록과 데이터 개수 처리-->
+    <sql id="criteria">
+        <trim prefix="(" suffix=") AND" prefixOverrides="OR">
+            <foreach item='type' collection="typeArr">
+                <trim prefix="OR">
+                    <choose>
+                        <when test="type == 'T'.toString()">
+                            title like '%'||#{keyword}||'%'
+                        </when>
+                        <when test="type == 'C'.toString()">
+                            content like '%'||#{keyword}||'%'
+                        </when>
+                        <when test="type == 'W'.toString()">
+                            writer like '%'||#{keyword}||'%'
+                        </when>
+                    </choose>
+                </trim>
+            </foreach>
+        </trim>
+    </sql>
 
-
+    <!--검색 및 페이징 처리 (동적 SQL)-->
     <select id="getListWithPaging" resultType="org.woodee.domain.BoardVO">
         <![CDATA[
         SELECT bno, title, content, writer,regdate, updatedate
@@ -20,7 +34,13 @@
             SELECT /*+ INDEX_DESC(tbl_board pk_board)*/
              rownum rn, bno, title, content, writer, regdate,updatedate
             FROM tbl_board
-            WHERE rownum <= #{pageNum} * #{amount}
+            WHERE
+        ]]>
+        
+        <include refid="criteria"></include>   
+        
+        <![CDATA[
+             rownum <= #{pageNum} * #{amount}
         )
         WHERE rn > (#{pageNum}-1) * #{amount}
         ]]>
@@ -60,9 +80,35 @@
         WHERE bno = #{bno}
     </update>
 
+    <!--목록과 데이터 개수처리를 위해 getListWithPaging 과 마찬가지로 동적 SQL 넣어줘야한다.-->
     <select id="getTotalCount" resultType="int">
         SELECT count(*)
         FROM tbl_board
         WHERE bno > 0
+        <include refid="criteria"></include>
     </select>
+
+    <!--메모 및 참고-->
+
+    <!--
+    rownum을 이용하면 1부터 구할 수 있다. 즉 11~20을 바로 못 구한다.
+    그래서 인라인뷰를 이용해 1~20 을 구한뒤 필요한 페이징 처리를 한다.
+    인라인뷰에서는 rownum 의 기준을 pageNum(몇페이지로 나타낼건지) * amount(페이지당 몇개 나타낼건지)
+    테이블 where 절에서는 rownum 을 (pageNum-1) * amount 로 한다.
+    -->
+    <!--
+    //페이징 처리만 하는 쿼리문
+    <select id="getListWithPaging" resultType="org.woodee.domain.BoardVO">
+        <![CDATA[
+        SELECT bno, title, content, writer,regdate, updatedate
+        FROM(
+            SELECT /*+ INDEX_DESC(tbl_board pk_board)*/
+             rownum rn, bno, title, content, writer, regdate,updatedate
+            FROM tbl_board
+            WHERE rownum <= #{pageNum} * #{amount}
+        )
+        WHERE rn > (#{pageNum}-1) * #{amount}
+        ]]>
+    </select>
+    -->
 </mapper>

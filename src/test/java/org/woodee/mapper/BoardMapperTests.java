@@ -26,6 +26,18 @@ public class BoardMapperTests {
     private BoardMapper boardMapper;
 
     @Test
+    public void testSearch() {
+        Criteria cri = new Criteria();
+        cri.setPageNum(1);
+        cri.setAmount(30);
+        cri.setKeyword("Test");
+        cri.setType("T");
+
+        List<BoardVO> list = boardMapper.getListWithPaging(cri);
+        list.forEach(board -> log.info(board));
+    }
+
+     @Test
     public void testPaging() {
         Criteria cri = new Criteria();
 
@@ -37,6 +49,7 @@ public class BoardMapperTests {
         List<BoardVO> list = boardMapper.getListWithPaging(cri);
         list.forEach(board -> log.info(board.getBno()));
     }
+
 
     @Test
     public void testGetList() {
@@ -88,7 +101,7 @@ public class BoardMapperTests {
 
         int count = boardMapper.update(board);
         log.info("UPDATE COUNT : " + count);
-
     }
+
 
 }
