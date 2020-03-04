@@ -84,8 +84,9 @@
     <select id="getTotalCount" resultType="int">
         SELECT count(*)
         FROM tbl_board
-        WHERE bno > 0
-        <include refid="criteria"></include>
+        WHERE
+            <include refid="criteria"></include>
+        bno > 0
     </select>
 
     <!--메모 및 참고-->

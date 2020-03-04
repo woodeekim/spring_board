@@ -69,11 +69,15 @@ public class BoardController {
         if(service.modify(board)){
             redirectAttributes.addFlashAttribute("result", "success");
         }
-
+        //<redirectAttributes 대신 UriComponentsBuilder로 만든 getListLink() 메소드 사용시>
+        /*
         redirectAttributes.addAttribute("pageNum", cri.getPageNum());
         redirectAttributes.addAttribute("amount", cri.getAmount());
+        redirectAttributes.addAttribute("type", cri.getType());
+        redirectAttributes.addAttribute("keyword", cri.getKeyword());
+        */
 
-        return "redirect:/board/list";
+        return "redirect:/board/list" + cri.getListLink();
     }
 
     @PostMapping("/remove")
@@ -82,10 +86,14 @@ public class BoardController {
         if(service.remove(bno)){
             redirectAttributes.addFlashAttribute("result", "success");
         }
-
+        //<redirectAttributes 대신 UriComponentsBuilder로 만든 getListLink() 메소드 사용시>
+        /*
         redirectAttributes.addAttribute("pagNum", cri.getPageNum());
         redirectAttributes.addAttribute("amount", cri.getPageNum());
-        return "redirect:/board/list";
+        redirectAttributes.addAttribute("type", cri.getType());
+        redirectAttributes.addAttribute("keyword", cri.getKeyword());
+         */
+        return "redirect:/board/list" + cri.getListLink();
 
     }
 
