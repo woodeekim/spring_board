@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.woodee.domain.SampleDTO;
 import org.woodee.domain.SampleDTOList;
+import org.woodee.domain.Ticket;
 import org.woodee.domain.TodoDTO;
 
 import java.text.SimpleDateFormat;
@@ -136,6 +137,28 @@ public class SampleController {
             log.info("name:" + file.getOriginalFilename());
             log.info("size:" + file.getSize());
         });
+    }
+
+    //@Pathvariable
+    /*
+     - REST 방식에서는 URL 내에 최대한 많은 정보를 담으려고 노력한다.
+     - REST방식에서는 URL 자체에 데이터를 식별할 수 있는 정보들을 표현하는 경우가 많다.
+       그래서 다양한 방식으로 @PathVariable이 사용된다.
+     - @Pathvariable 에서는 int, double과 같은 기본자료형은 사용할 수가 없다.
+    */
+    @GetMapping("/product/{cat}/{pid}")
+    public @ResponseBody String[] getPath(@PathVariable("cat") String cat,
+                            @PathVariable("pid") Integer pid){
+        return new String[]{"category: " + cat, "product id: " +pid};
+    }
+
+    //@RequestBody
+    //@RequestBody를 통해서 외부에서 보내는 파라미터를 원하는 타입으로 바꿀 수 있다.
+    //대부분 JSON 데이터를 서버에 보내서 원하는 타입의 객체로 사용
+    @PostMapping("/ticket")
+    public Ticket convert(@RequestBody Ticket ticket){
+        log.info("convert....  ticket" + ticket);
+        return ticket;
     }
 
 

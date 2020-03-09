@@ -14,8 +14,8 @@
 <h3>Hello Spring</h3>
 <div>
     <ul>
-        <li><a href="http://localhost:8080/board/list">게시글 전체보기</a></li>
-        <li><a href="http://localhost:8080/board/register">게시글 작성</a></li>
+        <li><a href="http://localhost:8006/board/list">게시글 전체보기</a></li>
+        <li><a href="http://localhost:8006/board/register">게시글 작성</a></li>
     </ul>
 </div>
 </body>
