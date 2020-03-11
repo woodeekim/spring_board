@@ -22,4 +22,5 @@ public interface BoardMapper {
     //Criteri를 안받아도 페이징 처리가 문제없지만 검색할 때 필요하기 때문에 받아준다.
     public int getTotalCount(Criteria cri);
 
+
 }
