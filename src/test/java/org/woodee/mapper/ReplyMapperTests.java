@@ -51,7 +51,34 @@ public class ReplyMapperTests {
 
             mapper.insert(vo);
         });
-
     }
+
+    //조회
+    @Test
+    public void testRead(){
+        ReployVO vo = new ReployVO();
+        vo.setRno(5L);
+
+        log.info(mapper.read(vo.getRno()));
+    }
+
+    //삭제
+    @Test
+    public void testDelete(){
+        //다음과 같은 방법이면 굳이 VO 객체를 생성해서 값을 안 넣어줘도 된다
+        Long targetRno = 5L;
+        mapper.delete(targetRno);
+    }
+
+    //수정
+    @Test
+    public void testUpdate() {
+        Long targetRno = 6L;
+        ReployVO vo = mapper.read(targetRno);
+        vo.setReply("댓글 UPDATE 합니다");
+        int count = mapper.update(vo);
+        log.info("업데이트 숫자" + count);
+    }
+
 
 }

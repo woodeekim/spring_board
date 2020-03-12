@@ -9,4 +9,22 @@
         INSERT INTO tbl_reply (rno, bno, reply, replyer)
         VALUES(seq_reply.nextval, #{bno}, #{reply}, #{replyer})
     </insert>
+    <!--1개의 댓글만 조회-->
+    <select id="read" resultType="org.woodee.domain.ReployVO">
+        SELECT *
+        FROM tbl_reply
+        WHERE rno = #{rno}
+    </select>
+    <!--삭제-->
+    <delete id="delete">
+        DELETE FROM tbl_reply
+        WHERE rno = #{rno}
+    </delete>
+    <!--수정-->
+    <update id="update">
+        UPDATE tbl_reply
+        SET reply = #{reply}, updatedate = sysdate
+        WHERE rno = #{rno}
+    </update>
+
 </mapper>
