@@ -28,7 +28,7 @@ import java.util.Date;
  **/
 
 @Data
-public class ReployVO {
+public class ReplyVO {
     private Long rno;
     private Long bno;
     private String reply;

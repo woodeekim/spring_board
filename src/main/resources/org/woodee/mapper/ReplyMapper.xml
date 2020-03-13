@@ -10,7 +10,7 @@
         VALUES(seq_reply.nextval, #{bno}, #{reply}, #{replyer})
     </insert>
     <!--1개의 댓글만 조회-->
-    <select id="read" resultType="org.woodee.domain.ReployVO">
+    <select id="read" resultType="org.woodee.domain.ReplyVO">
         SELECT *
         FROM tbl_reply
         WHERE rno = #{rno}
@@ -27,7 +27,7 @@
         WHERE rno = #{rno}
     </update>
     <!--(페이징된)댓글 가져오기_지금은 특정게시물만-->
-    <select id="getListWithPaging" resultType="org.woodee.domain.ReployVO">
+    <select id="getListWithPaging" resultType="org.woodee.domain.ReplyVO">
         SELECT rno, bno, reply, replyer, replyDate, updatedate
         FROM tbl_reply
         WHERE bno = #{bno}

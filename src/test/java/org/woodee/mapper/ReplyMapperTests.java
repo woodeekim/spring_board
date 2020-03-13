@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.woodee.domain.Criteria;
-import org.woodee.domain.ReployVO;
+import org.woodee.domain.ReplyVO;
 
 import java.util.List;
 import java.util.stream.IntStream;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/applicationContext.xml")
@@ -46,7 +44,7 @@ public class ReplyMapperTests {
 
         IntStream.rangeClosed(1,10).forEach(i -> {
 
-            ReployVO vo = new ReployVO();
+            ReplyVO vo = new ReplyVO();
             vo.setBno(bnoArr[i % 5]);
             vo.setReply("댓글 테스트" + i);
             vo.setReplyer("replyer" + i);
@@ -58,7 +56,7 @@ public class ReplyMapperTests {
     //조회
     @Test
     public void testRead(){
-        ReployVO vo = new ReployVO();
+        ReplyVO vo = new ReplyVO();
         vo.setRno(5L);
 
         log.info(mapper.read(vo.getRno()));
@@ -76,7 +74,7 @@ public class ReplyMapperTests {
     @Test
     public void testUpdate() {
         Long targetRno = 6L;
-        ReployVO vo = mapper.read(targetRno);
+        ReplyVO vo = mapper.read(targetRno);
         vo.setReply("댓글 UPDATE 합니다");
         int count = mapper.update(vo);
         log.info("업데이트 숫자" + count);
@@ -89,7 +87,7 @@ public class ReplyMapperTests {
     public void testList(){
         Criteria cri = new Criteria();
         Long targetBno = 120L;
-        List<ReployVO> replies = mapper.getListWithPaging(cri,targetBno);
+        List<ReplyVO> replies = mapper.getListWithPaging(cri,targetBno);
 
         replies.forEach(reply ->log.info(reply));
     }
