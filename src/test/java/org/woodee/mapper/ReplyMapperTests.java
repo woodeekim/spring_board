@@ -7,8 +7,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.woodee.domain.Criteria;
 import org.woodee.domain.ReployVO;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
@@ -78,6 +80,18 @@ public class ReplyMapperTests {
         vo.setReply("댓글 UPDATE 합니다");
         int count = mapper.update(vo);
         log.info("업데이트 숫자" + count);
+    }
+
+    //(페이징된)특정 게시물의 댓글 불러오기
+    /*java.lang.Exception: No tests found matching Method testList(org.woodee.mapper.ReplyMapperTests) */
+    //아! Test 어노테이션을 안했기 때문에 당연히 testList() 메소를 찾을 수 없었다.
+    @Test
+    public void testList(){
+        Criteria cri = new Criteria();
+        Long targetBno = 120L;
+        List<ReployVO> replies = mapper.getListWithPaging(cri,targetBno);
+
+        replies.forEach(reply ->log.info(reply));
     }
 
 
