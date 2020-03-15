@@ -35,9 +35,12 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/resources/js/reply.js"></script>
 <script type="text/javascript">
     //form 안에 input type을 hidden 으로 파라미터 보내는 첫번째 방법
     $(document).ready(function () {
+        console.log("----replyService------");
+        console.log(replyService);
         var operForm = $("#operForm");
         $("button[data-oper='modify']").on("click",function (e) {
             e.preventDefault();
