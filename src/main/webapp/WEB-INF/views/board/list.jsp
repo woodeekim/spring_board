@@ -36,6 +36,15 @@
                                 <th>수정일</th>
                             </tr>
                             </thead>
+                            <%--
+                                1.BoardController에서 Model에 list 를 담았지
+                                2.이후 list.jsp 로 전달했고
+                                3.그러면 get.jsp 에 replyService.getList(~,function(list){});
+                                  getList함수를 호출하면서 두번째 인자 값으로 넣은 list는 대체 어디서??
+                                  (list의 이름을 바꿔도 리스트를 받는데.. 어디서 받는거지?)
+                                  잠깐 board의 list 를 받는게 아니라 reply 의 list 를 불러오잖아!
+                                  찾아낸 실마리 키워드 => 비동기통신과 콜백함수(관련해서 찾자)
+                            --%>
                             <c:forEach items="${list}" var="board">
                             <tbody>
                             <tr class="odd gradeX">

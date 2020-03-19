@@ -14,6 +14,15 @@ var replyService = (function () {
 console.log("Reply Module......");
 var replyService = (function () {
 
+    //댓글 추가 함수
+    /*
+        get.jsp 에서 아직 댓글의 view 를 구현하지 않은 상태다.
+        상상해보자면 댓글 등록을 누르면 스크립트 처리를 통해
+        add() 함수를 호출할 것 같다.
+        reply 객체 안에는 reply(내용), replyr(댓글 작성자), Model에서 받은 bno 와
+        callback 함수에는
+
+    */
     function add(reply, callback, error) {
         console.log("add reply using ajax");
 
@@ -22,8 +31,13 @@ var replyService = (function () {
             url : '/replies/new',
             data : JSON.stringify(reply),
             contentType : "application/json; charset=utf-8",
+            //result에 담기는 값이 ajax 의 결과값인가? (결과는 success가 나오는데
+            //이거에 대해서 찾아보자
+            //찾는 키워드 콜백함수, ajax
             success : function (result, status, xhr) {
+                //callback 이 있으면 true
                 if(callback) {
+                    //callback함수를 그디어 실행시키는데 result 를 담아서 실행.
                     callback(result);
                 }
             },
@@ -33,6 +47,30 @@ var replyService = (function () {
                 }
             }
         })//ajax end
-    }
-    return {add:add};
+    }//add() end
+
+    function getList(param, callback, error) {
+        var bno = param.bno;
+        var page = param.page || 1;
+
+        //jQuery 에서 제공하는 gegJson() 함수는 처음 쓴다.
+        $.getJSON("/replies/pages/" + bno + "/" + page + ".json",
+            function (data) {
+                if(callback) {
+                    callback(data);
+                }
+            }).fail(function (xhr, status, err) {
+                if(error) {
+                    error();
+                }
+        });
+    }//getList()
+    return {add:add, getList:getList};
 })();
+/*
+    (다시 되새기기)
+    - 즉시 실행함수 var yogi = (function(){})();
+        - 즉시 실행함수의 결과가 변수에 할당한다.
+        - 즉시 실행함수를 사용하면 자바에서 여러 메소드를 가진
+          하나의 클래스와 같은 역할을 javascript 에서 할 수 있기 때문이다.
+*/

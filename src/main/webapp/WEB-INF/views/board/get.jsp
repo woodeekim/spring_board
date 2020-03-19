@@ -47,11 +47,24 @@
             replyer: "tester",
             bno : bnoValue
         },
+        /*result의 결과값으로 success 를 받는데..*/
         function (result) {
             alert("RESULT : " + result);
         }
     );
+
+    console.log("JS TEST for getList");
+    replyService.getList({bno:bnoValue, page:1}, function (listss) {
+            for(let i=0, len = list.length ||0; i<len; i++ ){
+                console.log(list[i]);
+            }//for
+        });
 </script>
+<%--
+    HTML5 부터는 <script> 라고 쓰면 디폴트로
+    <script type="text/javascript"> 으로 설정하기 때문에 안써도 된다.
+--%>
+
 <script type="text/javascript">
     //form 안에 input type을 hidden 으로 파라미터 보내는 첫번째 방법
     $(document).ready(function () {
