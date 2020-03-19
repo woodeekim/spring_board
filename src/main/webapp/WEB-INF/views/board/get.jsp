@@ -37,10 +37,10 @@
 </div>
 <script type="text/javascript" src="/resources/js/reply.js"></script>
 <script type="text/javascript">
-    console.log("==JS TEST==");
     var bnoValue = '<c:out value="${board.bno}"/>';
     console.log("bnoValue : "+bnoValue);
-
+    console.log("Test reply for javascript");
+    console.log("==========add()==========")
     replyService.add(
         {
             reply : "JS test",
@@ -53,12 +53,47 @@
         }
     );
 
-    console.log("JS TEST for getList");
-    replyService.getList({bno:bnoValue, page:1}, function (listss) {
+    console.log("==========getList()==========")
+    replyService.getList({bno:bnoValue, page:1}, function (list) {
             for(let i=0, len = list.length ||0; i<len; i++ ){
                 console.log(list[i]);
             }//for
         });
+
+    console.log("==========remove()==========")
+    //count 가 도대체 어디서 보내길래 값을 remove에 값으로 넣어서 호출 하는걸까?
+    /*
+        count 의 정체 (*콜백함수 이슈에 대한 최종 정리!)
+        => remove() 함수를 호출 할 때 인자값으로 count 를 넣어주는게
+           아니라 ajax 를 통해 정상적으로 통신이 된 후, 결과값을 인자로
+           갖는 success:function(deleteResult){} 함수를 호출한다.
+           (여기가 중요) 이때 callback(deleteResult)인 콜백함수를 호출 할 때
+           get.jsp 에서 remove() 함수의 콜백함수가 실행되는 것이다.
+     */
+
+    replyService.remove(49, function (count) {
+        if (count === "test") {
+            alert("삭제 완료");
+        }//if
+    },function(err) {
+            alert("에러");
+        });
+
+    replyService.update(
+        {
+            rno : 22,
+            bno : bnoValue,
+            reply : "수정하는 테스트입니다."
+        },
+        function (result) {
+            alert("콜백함수를 호출 했을때 이창이 나옵니다. 수정 완료!");
+        }
+    )
+
+    replyService.get(10, function (result) {
+        alert("get");
+        console.log(result);
+    })
 </script>
 <%--
     HTML5 부터는 <script> 라고 쓰면 디폴트로

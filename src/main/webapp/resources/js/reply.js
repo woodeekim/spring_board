@@ -24,8 +24,6 @@ var replyService = (function () {
 
     */
     function add(reply, callback, error) {
-        console.log("add reply using ajax");
-
         $.ajax({
             type : 'post',
             url : '/replies/new',
@@ -34,6 +32,7 @@ var replyService = (function () {
             //result에 담기는 값이 ajax 의 결과값인가? (결과는 success가 나오는데
             //이거에 대해서 찾아보자
             //찾는 키워드 콜백함수, ajax
+            //*=>get.jsp 에서 이해하고 정리한 내용있음!
             success : function (result, status, xhr) {
                 //callback 이 있으면 true
                 if(callback) {
@@ -65,7 +64,62 @@ var replyService = (function () {
                 }
         });
     }//getList()
-    return {add:add, getList:getList};
+
+    function remove(rno, callback, error) {
+        $.ajax({
+            type : 'delete',
+            url : '/replies/' + rno,
+            success : function (deleteResult, status, xhr) {
+                if(callback) {
+                    callback(deleteResult);
+                }
+            },
+            error : function (xhr, status, er) {
+                if(error) {
+                    error(er);
+                }
+            }
+        });//ajax
+    }//remove
+
+    function update(reply, callback, error) {
+        $.ajax({
+            type : 'put',
+            url : '/replies/' + reply.rno,
+            data : JSON.stringify(reply),
+            contentType : 'application/json; charset=utf-8',
+            success : function (result, status, xhr) {
+                if(callback){
+                    callback(result);
+                }
+            },
+            error : function (xhr, status, er) {
+                if(error){
+                    error(er);
+                }
+            }
+        });//ajax
+    }//update
+
+    function get(rno, callback, error) {
+        $.get("/replies/" + rno + ".json", function (result) {
+            if(callback){
+                callback(result);
+            }
+        }).fail(function (xhr, status, err) {
+            if(error){
+                error();
+            }
+        });
+    }//get
+
+    return {
+        add:add,
+        getList:getList,
+        remove:remove,
+        update:update,
+        get:get
+    };
 })();
 /*
     (다시 되새기기)

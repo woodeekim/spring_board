@@ -72,12 +72,21 @@ public class ReplyController {
         return new ResponseEntity<>(replyService.get(rno),HttpStatus.OK);
     }
     //댓글 삭제
+    /*
+        ResponseEntity
+        - ResponseEntity는 HttpEntity를 상속받음으로써
+          HttpHeader 와 body를 가질 수 있다.
+        - ResponseEntity는 status field를 가지기 때문에
+          상태코드를 필수적으로 리턴해줘야 한다.
+        - 사용하는 이유는 응답 코드, 헤더, 본문을 다루기 위해서
+          사용한다.
+    */
     @DeleteMapping(value = "/{rno}", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> remove(@PathVariable("rno") Long rno) {
         log.info("remove : " + rno);
 
         return replyService.remove(rno) == 1
-                ? new ResponseEntity<>("success",HttpStatus.OK)
+                ? new ResponseEntity<>("test",HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
     //댓글 수정

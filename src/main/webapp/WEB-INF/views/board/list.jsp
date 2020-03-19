@@ -44,6 +44,7 @@
                                   (list의 이름을 바꿔도 리스트를 받는데.. 어디서 받는거지?)
                                   잠깐 board의 list 를 받는게 아니라 reply 의 list 를 불러오잖아!
                                   찾아낸 실마리 키워드 => 비동기통신과 콜백함수(관련해서 찾자)
+                                  *=> get.jsp의 remove() 의 최종 정리한 걸 보자!
                             --%>
                             <c:forEach items="${list}" var="board">
                             <tbody>
