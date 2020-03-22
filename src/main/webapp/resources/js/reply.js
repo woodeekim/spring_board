@@ -113,12 +113,43 @@ var replyService = (function () {
         });
     }//get
 
+    function displayTime(timeValue) {
+        var today = new Date();
+        var timeGapLastPost = today.getTime() - timeValue;
+        var dateObj = new Date(timeValue);
+        var str = "";
+
+        //24시간 60분 60초(86,400,000초)이다.
+        /*
+            즉 24시간 60분 60초가 넘지 않으면 시/분/초,
+            넘으면 년/월/일로 보여준다.
+         */
+        if(timeGapLastPost < (1000 * 60 * 60 * 24)){
+            var hours = dateObj.getHours();
+            var minutes = dateObj.getMinutes();
+            var seconds = dateObj.getSeconds();
+
+
+            //.join()은 배열의 원소들을 연결하여 하나의 값으로 만든다. (JS함수)
+            return [(hours > 9 ? '' : '0') + hours, ':', (minutes > 9 ? '' : 0) + minutes,
+                    ':', (seconds > 9 ? '' : '0') + seconds].join('');
+        }else{
+            var year = dateObj.getFullYear();
+            var month = dateObj.getMonth() + 1;
+            var day = dateObj.getDate();
+
+            return [year, '/', (month > 9 ? '' : '0') + month, '/',
+                (day > 9 ? '' : '0') + day].join('');
+        }// end if~else
+    }// end displayTime
+
     return {
         add:add,
         getList:getList,
         remove:remove,
         update:update,
-        get:get
+        get:get,
+        displayTime:displayTime
     };
 })();
 /*
