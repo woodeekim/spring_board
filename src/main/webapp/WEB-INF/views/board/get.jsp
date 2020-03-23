@@ -44,7 +44,8 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-comments fa-fw"></i> 댓글
+                <i class="fa fa-comments fa-fw"></i>댓글
+                <button id="addReplyBtn" class="btn btn-primary btn-xs pull-right">댓글작성</button>
             </div>
             <div class="panel-body">
                 <ul class="chat">
@@ -64,6 +65,49 @@
     </div>
 </div><%--//댓글--%>
 
+<%--
+    모달창은 html 태그 안에만 설정하면 정중앙에 위치함으로
+    어디든 상관없다. (기본적으로 css 속성이 정중앙으로 설정되어 있나보다.)
+--%>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">REPLY MODAL</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Reply</label>
+                    <input class="form-control" name="reply" value="새 댓글">
+                </div>
+                <div class="form-group">
+                    <label>Replyer</label>
+                    <input class="form-control" name="replyer" value="replyer">
+                </div>
+                <div class="form-group">
+                    <label>Reply Date</label>
+                    <input class="form-control" name="replyDate" value="">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="modalModBtn" type="button" class="btn btn-warning">수정</button>
+                <button id="modalRemoveBtn" type="button" class="btn btn-warning">삭제</button>
+                <button id="modalRegisterBtn" type="button" class="btn btn-warning">등록</button>
+                <button id="modalCloseBtn" type="button" class="btn btn-warning">닫기</button>
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 <%--
     HTML5 부터는 <script> 라고 쓰면 디폴트로
@@ -76,6 +120,15 @@
         var bnoValue = '<c:out value="${board.bno}"/>';
         var replyUL = $(".chat");
         var operForm = $("#operForm");
+
+        //댓글 모달창 변수들
+        var modal = $(".modal");
+        var modalInputReply = modal.find("input[name='reply']");
+        var modalInputReplyer = modal.find("input[name='replyer']");
+        var modalInputReplyDate = modal.find("input[name='replyDate']");
+        var modalModBtn = $("#modalModBtn");
+        var modalRemoveBtn = $("#modalRemoveBtn");
+        var modalRegisterBtn = $("#modalRegisterBtn");
 
         showList(1);
         //form 안에 input type을 hidden 으로 파라미터 보내는 첫번째 방법
@@ -93,24 +146,72 @@
         function showList(page) {
             replyService.getList(
                 {
-                    bno : bnoValue,
-                    page : page || 1
+                    bno: bnoValue,
+                    page: page || 1
                 },
                 function (list) {
                     var str = "";
-                    if(list == null || list.length == 0){
+                    if (list == null || list.length == 0) {
                         replyUL.html("");
                         return;
                     }//if
-                    for(var i = 0, len = list.length || 0; i < len; i++){
-                        str += "<li class='left clearfix' data-rno='"+list[i].rno+"'>";
-                        str += "    <div><div class='header'><strong class='primary-font'>"+list[i].replyer+"</strong>";
-                        str += "    <small class='pull-right text-muted'>"+replyService.displayTime(list[i].replyDate)+"</small></div>";
-                        str += "    <p>"+list[i].reply+"</p></div></li>";
+                    for (var i = 0, len = list.length || 0; i < len; i++) {
+                        str += "<li class='left clearfix' data-rno='" + list[i].rno + "'>";
+                        str += "    <div><div class='header'><strong class='primary-font'>" + list[i].replyer + "</strong>";
+                        str += "    <small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) + "</small></div>";
+                        str += "    <p>" + list[i].reply + "</p></div></li>";
                     }//for
                     replyUL.html(str);
                 }); //end function
         }//end showList
+
+        //id가 addReplyBtn인 댓글작성 버튼을 누르면 모달창 show
+        /*
+        모달창이 켜지기기 까지
+        1.값들이 비어있어야 한다.
+            - 어떤값? : reply, replyer
+        2.요소들 숨기기
+            1. 수정, 삭제 버튼
+            2. replyDate를 가진 div 요소
+        */
+
+        $("#addReplyBtn").on("click",function () {
+            modal.find("input").val("");
+            /*
+                closest() JS함수
+                - 자신을 시작으로 부모요소 단위로 출발하여
+                  해당 메소드의 해당 요소를 찾아 반환한다.
+                  없으면 NULL 값 반환
+            */
+            modalInputReplyDate.closest("div").hide();
+            modal.find("button[id !='modalCloseBtn']").hide();
+            modalRegisterBtn.show();
+            $(".modal").modal("show");
+        });
+
+    //모달창 댓글 등록
+    /*
+        인자와 매개변수
+        - 항상 헷갈렸는데 기초적인 개념 알아두자.
+        - 인자는 함수를 호출 할 때 전달되는 값이다.
+        - 반대로 매개변수는 그 전달되는 값을 받아들이는 변수다.
+            - 매개변수가 내가 잘 아는 파라미터다.
+    */
+    modalRegisterBtn.on("click",function () {
+        var reply = {
+            reply : modalInputReply.val(),
+            replyer : modalInputReplyer.val(),
+            bno : bnoValue
+        };
+        replyService.add(reply, function (result) {
+            alert(result);
+            modal.find("input").val("");
+            modal.modal("hide");
+
+            //댓글 갱신
+            showList(1);
+        });
+    });//end modalRegisterBtn
 
 
 

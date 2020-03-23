@@ -131,7 +131,7 @@ var replyService = (function () {
 
 
             //.join()은 배열의 원소들을 연결하여 하나의 값으로 만든다. (JS함수)
-            return [(hours > 9 ? '' : '0') + hours, ':', (minutes > 9 ? '' : 0) + minutes,
+            return [(hours > 9 ? '' : '0') + hours, ':', (minutes > 9 ? '' : '0') + minutes,
                     ':', (seconds > 9 ? '' : '0') + seconds].join('');
         }else{
             var year = dateObj.getFullYear();
