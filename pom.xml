@@ -8,6 +8,8 @@
     <artifactId>spring-board</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+
+
     <build>
         <plugins>
             <!--IntelliJ는 기본적으로 1.5로 되어있어서 안바꾸면 에러-->
@@ -23,6 +25,7 @@
     </build>
 
     <dependencies>
+
         <!-- Spring 필수 -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -160,8 +163,12 @@
         Process finished with exit code 0
         [해결]밑의 의존성을 추가 /버전이 안 맞아서 난 문제인듯?
         -->
-
-        <dependency>
+        <!--
+        slf4j library를 사용하는 이유?
+        java에서 log4j를 이용한 로그를 출력하기 위해서는 Logger 클래스가 필요한데,
+        slf4j library 내부에 Logger 클래스가 존재하므로 필요하다!
+        -->
+       <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.5</version>

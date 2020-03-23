@@ -1,12 +1,10 @@
 package org.woodee.controller;
 
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.woodee.domain.SampleDTO;
@@ -14,7 +12,6 @@ import org.woodee.domain.SampleDTOList;
 import org.woodee.domain.Ticket;
 import org.woodee.domain.TodoDTO;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
