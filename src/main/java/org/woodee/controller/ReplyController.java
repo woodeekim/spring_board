@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.woodee.domain.Criteria;
+import org.woodee.domain.ReplyPageDTO;
 import org.woodee.domain.ReplyVO;
 import org.woodee.service.ReplyService;
 
@@ -47,7 +48,7 @@ public class ReplyController {
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
     //1개의 게시물의 댓글들 조회
-    @GetMapping(value = "/pages/{bno}/{page}",
+   /* @GetMapping(value = "/pages/{bno}/{page}",
         produces = {
             MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE })
@@ -61,7 +62,26 @@ public class ReplyController {
         log.info(criteria);
 
         return new ResponseEntity<>(replyService.getListWithPaging(criteria,bno),HttpStatus.OK);
+    }*/
+
+    //댓글들의 객체 리스트와 댓글의 수를 알기위해 추가
+      @GetMapping(value = "/pages/{bno}/{page}",
+        produces = {
+            MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<ReplyPageDTO> getList(
+            @PathVariable("bno") Long bno,
+            @PathVariable("page") int page) {
+
+        log.info("getList...........");
+        //Criteria(pageNum,amount);
+        Criteria criteria = new Criteria(page, 10);
+        log.info(criteria);
+
+        return new ResponseEntity<>(replyService.getListPage(criteria,bno),HttpStatus.OK);
     }
+
+
     //1개의 댓글 조회
     @GetMapping(value = "/{rno}",
         produces = { MediaType.APPLICATION_XML_VALUE,

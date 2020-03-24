@@ -92,5 +92,15 @@ public class ReplyMapperTests {
         replies.forEach(reply ->log.info(reply));
     }
 
+    //스스로 생각해서 테스트를 진행해보자.
+    @Test
+    public void testGetListWithPaging() {
+
+        Criteria cri = new Criteria(2,10);
+        //getListWithPaging() 메소드에 필요한 인자는 Criteria 객체와 bno
+
+        List<ReplyVO> replies = mapper.getListWithPaging(cri, 120L);
+        replies.forEach(reply->log.info(reply));
+    }
 
 }

@@ -50,16 +50,19 @@
             <div class="panel-body">
                 <ul class="chat">
                     <%--data 속성은 HTML5부터 생긴 데이터 속성이다.--%>
-                    <li class="left clearfix" data-rno="12">
-                        <div>
-                            <div class="header">
-                                <strong class="primary-font">user00</strong>
-                                <small class="pull-right text-muted">2018-01-01 13:13</small>
-                            </div>
-                            <p>굿잡!!!</p>
-                        </div>
-                    </li>
+                    <%-- <li class="left clearfix" data-rno="12">
+                         <div>
+                             <div class="header">
+                                 <strong class="primary-font">user00</strong>
+                                 <small class="pull-right text-muted">2018-01-01 13:13</small>
+                             </div>
+                             <p>굿잡!!!</p>
+                         </div>
+                     </li>--%>
                 </ul>
+            </div>
+            <%--페이지 출력--%>
+            <div class="panel-footer">
             </div>
         </div>
     </div>
@@ -130,7 +133,12 @@
         var modalRemoveBtn = $("#modalRemoveBtn");
         var modalRegisterBtn = $("#modalRegisterBtn");
 
+        //댓글 페이지를 위한 변수들
+        var pageNum = 1;
+        var replyPageFooter = $(".panel-footer");
+
         showList(1);
+
         //form 안에 input type을 hidden 으로 파라미터 보내는 첫번째 방법
         $("button[data-oper='modify']").on("click", function (e) {
             e.preventDefault();
@@ -144,15 +152,27 @@
         });
 
         function showList(page) {
+            console.log("show list " + page);
             replyService.getList(
                 {
                     bno: bnoValue,
                     page: page || 1
                 },
-                function (list) {
+                //페이징된 댓글을 불러오기 위해 댓글의 수인 replyCnt 매개변수 추가
+                function (replyCnt, list) {
+                    console.log("replyCnt: " + replyCnt);
+                    console.log("list:" + list);
+                    console.log(list);
+
+                    //page번호가 -1 이면 마지막 페이지를 찾아서 다시 호출
+                    if (page == -1) {
+                        pageNum = Math.ceil(replyCnt / 10.0);
+                        showList(pageNum);
+                        return;
+                    }//end if
                     var str = "";
                     if (list == null || list.length == 0) {
-                        replyUL.html("");
+                        //replyUL.html("");
                         return;
                     }//if
                     for (var i = 0, len = list.length || 0; i < len; i++) {
@@ -162,6 +182,7 @@
                         str += "    <p>" + list[i].reply + "</p></div></li>";
                     }//for
                     replyUL.html(str);
+                    showReplyPage(replyCnt);
                 }); //end function
         }//end showList
 
@@ -175,7 +196,7 @@
             2. replyDate를 가진 div 요소
         */
 
-        $("#addReplyBtn").on("click",function () {
+        $("#addReplyBtn").on("click", function () {
             modal.find("input").val("");
             /*
                 closest() JS함수
@@ -189,98 +210,142 @@
             $(".modal").modal("show");
         });
 
-    //모달창 댓글 등록
-    /*
-        인자와 매개변수
-        - 항상 헷갈렸는데 기초적인 개념 알아두자.
-        - 인자는 함수를 호출 할 때 전달되는 값이다.
-        - 반대로 매개변수는 그 전달되는 값을 받아들이는 변수다.
-            - 매개변수가 내가 잘 아는 파라미터다.
-    */
-    modalRegisterBtn.on("click",function () {
-        var reply = {
-            reply : modalInputReply.val(),
-            replyer : modalInputReplyer.val(),
-            bno : bnoValue
-        };
-        replyService.add(reply, function (result) {
-            alert(result);
-            modal.find("input").val("");
-            modal.modal("hide");
-
-            //댓글 갱신
-            showList(1);
-        });
-    });//end modalRegisterBtn
-
-    //특정 댓글의 클릭 이벤트 처리
-    $(".chat").on("click", "li", function () {
-        var rno = $(this).data("rno");
-
-        replyService.get(rno, function (reply) {
-            modalInputReply.val(reply.reply);
-            modalInputReplyer.val(reply.replyer);
-            modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly", "readonly");
-            modal.data("rno", reply.rno);
-            /*
-                (이상하게 이해하는데 한참걸렸다.)
-                modal에서 modalClose가 아닌 button 의 속성들을 숨겨라는 뜻이다.
-            */
-            modal.find("button[id != 'modalCloseBtn']").hide();
-            modalModBtn.show();
-            modalRemoveBtn.show();
-
-            $(".modal").modal("show");
-        });
-    });
-
-    //댓글 수정
-    modalModBtn.on("click", function () {
-        var reply = {
-            rno : modal.data("rno"),
-            reply : modalInputReply.val()
-        };
-       replyService.update(reply, function (result) {
-            alert(result);
-            modal.modal("hide");
-            showList(1);
-       });
-    });
-
-    //댓글 삭제
-    modalRemoveBtn.on("click", function () {
+        //모달창 댓글 등록
         /*
-            rno는 어떻게 불러오는가?
-            - data함수의 이름(키)을 불러오면 해당하는 값을 반환한다.
-            - 해당 댓글을 클릭할 때 콜백함수(확실x)의 결과값에 담긴 rno를
-              data("rno",값) 에 담고 이걸 불러 쓰는 것이다
+            인자와 매개변수
+            - 항상 헷갈렸는데 기초적인 개념 알아두자.
+            - 인자는 함수를 호출 할 때 전달되는 값이다.
+            - 반대로 매개변수는 그 전달되는 값을 받아들이는 변수다.
+                - 매개변수가 내가 잘 아는 파라미터다.
         */
-        var rno = modal.data("rno");
-        replyService.remove(rno, function (result) {
-            alert(result);
-            modal.modal("hide");
-            showList(1);
+        modalRegisterBtn.on("click", function () {
+            var reply = {
+                reply: modalInputReply.val(),
+                replyer: modalInputReplyer.val(),
+                bno: bnoValue
+            };
+            replyService.add(reply, function (result) {
+                alert(result);
+                modal.find("input").val("");
+                modal.modal("hide");
+
+                //댓글 갱신
+                //showList(1);
+                //사용자가 새로운 댓글을 차가하면 showList(-1); 을 호출하여 댓글의
+                //숫자를 파악 후 마지막 페이지를 호출해서 이동시키는 방식으로 동작
+                showList(-1);
+            });
+        });//end modalRegisterBtn
+
+        //특정 댓글의 클릭 이벤트 처리
+        $(".chat").on("click", "li", function () {
+            var rno = $(this).data("rno");
+
+            replyService.get(rno, function (reply) {
+                modalInputReply.val(reply.reply);
+                modalInputReplyer.val(reply.replyer);
+                modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly", "readonly");
+                modal.data("rno", reply.rno);
+                /*
+                    (이상하게 이해하는데 한참걸렸다.)
+                    modal에서 modalClose가 아닌 button 의 속성들을 숨겨라는 뜻이다.
+                */
+                modal.find("button[id != 'modalCloseBtn']").hide();
+                modalModBtn.show();
+                modalRemoveBtn.show();
+
+                $(".modal").modal("show");
+            });
         });
-    });
+
+        //댓글 수정
+        modalModBtn.on("click", function () {
+            var reply = {
+                rno: modal.data("rno"),
+                reply: modalInputReply.val()
+            };
+            replyService.update(reply, function (result) {
+                alert(result);
+                modal.modal("hide");
+                //showList(1);
+                //수정시 현재 댓글이 포함된 페이지로 이동할 수 있게
+                showList(pageNum);
+            });
+        });
+
+        //댓글 삭제
+        modalRemoveBtn.on("click", function () {
+            /*
+                rno는 어떻게 불러오는가?
+                - data함수의 이름(키)을 불러오면 해당하는 값을 반환한다.
+                - 해당 댓글을 클릭할 때 콜백함수(확실x)의 결과값에 담긴 rno를
+                  data("rno",값) 에 담고 이걸 불러 쓰는 것이다
+            */
+            var rno = modal.data("rno");
+            replyService.remove(rno, function (result) {
+                alert(result);
+                modal.modal("hide");
+                //showList(1);
+                //삭제시 현재 댓글이 포함되 페이지로 이동할 수 있게
+                showList(pageNum);
+            });
+        });
+
+        //페이지 번호를 출력하는 함수
+        function showReplyPage(replyCnt) {
+            var endNum = Math.ceil(pageNum / 10.0) * 10;
+            var startNum = endNum - 9;
+            var prev = startNum != 1;
+            var next = false;
+
+            if(endNum * 10 >= replyCnt) {
+                endNum = Math.ceil(replyCnt/10.0);
+            }//end if
+
+            if(endNum * 10 < replyCnt) {
+                next = true;
+            }//end if
+
+            var str = "<ul class='pagination pull-right'>";
+
+            if(prev) {
+                str += "<li class='page-item'><a class='page-link' href='"+(startNum-1)+"'>Previous</a></li>";
+            }//end if001
+
+            for(var i = startNum; i <= endNum; i++){
+
+                var active = pageNum == i ? "active" : "";
+
+                str += "<li class='page-item "+active+"'><a class='page-link' href='"+i+"'>"+i+"</a></li>";
+            }//end for
+
+
+            if(next) {
+                str += "<li class='page-item'><a class='page-link' href='"+(endNum+1)+"'>Next</a></li>";
+            }//end if
+
+            str += "</ul></div>";
+            console.log(str);
+            replyPageFooter.html(str);
+        }
+
+        //페이지의 번호를 클릭했을 때 새로운 댓글을 가져오기
+        /*
+            on함수의 인자3개짜리
+            - 이벤트위임을 하는 것이다. 즉 이벤트는 .panel-footer 에 이벤트를 걸고
+              실제 이벤트는 li a 요소로 실행시킨다. 아마도 동적으로 사용하기 위해서는
+              이렇게 on()함수를 써야된다.
+        */
+        replyPageFooter.on("click", "li a", function (e) {
+            e.preventDefault();
+            //attr() 함수를 통해 href 의 속성 값을 반환한다.
+            var targetPageNum = $(this).attr("href");
+            pageNum = targetPageNum;
+            showList(pageNum);
+        });
 
     });//ready()
-    //data-set 속성을 이용한 파라미터 보내는 두번째 방법
-    /*onclick 이벤트를 쓰지 않고(HTML과 CSS분리) script 에서 Model이 보내준 bno를 받아서 처리*/
-    /*
-    var bno = '
-<%--<c:out value="${board.bno}--%>"/>';
-        $("button").on("click",function () {
-            var operation = $(this).data("oper");
-            console.log(operation);
-            if(operation === 'modify'){
-                self.location='/board/modify?bno='+bno;
-            } else if(operation === 'list'){
-                self.location='/board/list';
-                return;
-            }
-        });
-    });
-    */
+
 </script>
 <%--reply test 를 위한 script 이다.--%>
 <script type="text/javascript">
@@ -341,7 +406,25 @@
         alert("get");
         console.log(result);
     })
+    //data-set 속성을 이용한 파라미터 보내는 두번째 방법
+    /*onclick 이벤트를 쓰지 않고(HTML과 CSS분리) script 에서 Model이 보내준 bno를 받아서 처리*/
+    /*
+    var bno = '
+<%--<c:out value="${board.bno}--%>"/>';
+        $("button").on("click",function () {
+            var operation = $(this).data("oper");
+            console.log(operation);
+            if(operation === 'modify'){
+                self.location='/board/modify?bno='+bno;
+            } else if(operation === 'list'){
+                self.location='/board/list';
+                return;
+            }
+        });
+    });
+    */
 </script>
+
 <%@ include file="../includes/footer.jsp" %>
 </body>
 </html>

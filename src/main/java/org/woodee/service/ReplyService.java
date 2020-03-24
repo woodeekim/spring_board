@@ -1,6 +1,8 @@
 package org.woodee.service;
 
 import org.woodee.domain.Criteria;
+import org.woodee.domain.PageDTO;
+import org.woodee.domain.ReplyPageDTO;
 import org.woodee.domain.ReplyVO;
 
 import java.util.List;
@@ -16,4 +18,7 @@ public interface ReplyService {
     public int remove(Long rno);
     //(페이징된)댓글들 조회
     public List<ReplyVO> getListWithPaging(Criteria cri, Long bno);
+    //페이징을 위한 댓글 가져오기
+    public ReplyPageDTO getListPage(Criteria cri, Long bno);
+
 }

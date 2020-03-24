@@ -27,11 +27,39 @@
         WHERE rno = #{rno}
     </update>
     <!--(페이징된)댓글 가져오기_지금은 특정게시물만-->
-    <select id="getListWithPaging" resultType="org.woodee.domain.ReplyVO">
+   <!-- <select id="getListWithPaging" resultType="org.woodee.domain.ReplyVO">
         SELECT rno, bno, reply, replyer, replyDate, updatedate
         FROM tbl_reply
         WHERE bno = #{bno}
         ORDER BY rno asc
+    </select>-->
+
+
+    <!--
+        - 같은 요소에서 id 값이 중복되면 안된다.
+        - ;(세미콜론)이 들어가면 안된다.
+    -->
+    <!--댓글 페이징-->
+    <select id="getListWithPaging" resultType="org.woodee.domain.ReplyVO">
+        <![CDATA[
+        SELECT rn, bno, rno, reply, replyer, replydate, updatedate
+        FROM
+        (
+        SELECT /*+INDEX(tbl_reply index_reply) */
+        rownum rn,bno, rno, reply, replyer, replydate, updatedate
+        FROM tbl_reply
+        WHERE bno = #{bno} AND rno > 0 AND rownum <= #{cri.pageNum} * #{cri.amount}
+        )
+        WHERE rn > #{cri.pageNum}-1 * #{cri.amount}
+        ]]>
     </select>
-    <!---->
+
+    <!--댓글 수 가져오기-->
+    <select id="getCountByBno" resultType="int">
+    <![CDATA[
+        SELECT count(rno)
+        FROM tbl_reply
+        WHERE bno = #{bno}
+    ]]>
+    </select>
 </mapper>

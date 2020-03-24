@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.woodee.domain.Criteria;
+import org.woodee.domain.ReplyPageDTO;
 import org.woodee.domain.ReplyVO;
 import org.woodee.mapper.ReplyMapper;
 
@@ -44,6 +45,14 @@ public class ReplyServiceImpl implements ReplyService {
     public List<ReplyVO> getListWithPaging(Criteria cri, Long bno) {
         log.info("get Reply List of a Board" + bno );
         return mapper.getListWithPaging(cri, bno);
+    }
+
+    @Override
+    public ReplyPageDTO getListPage(Criteria cri, Long bno) {
+        return new ReplyPageDTO(
+                mapper.getCountByBno(bno),
+                mapper.getListWithPaging(cri,bno)
+        );
     }
 }
 
