@@ -3,6 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <!--
+       설정하다가 스프링 설정과 동작원리에 대해서 다시 느낀 생각
+       1. tomcat 구동시 제일먼저 web.xml 에서 Context Listener 를 찾는다.
+       2. context 파라미터로 등록한 속성 값인 applicationContext.xml 찾는다.
+       3. applicationContext.xml 에서는 context:component-scan 으로 스프링에 빈을 등록한다. + mybatis-spring:scan
+       4. dispatcherServlet 관련 설정에서 주소 맵핑과 dispatcher-servlet.xml 을 찾는다.
+       5. dispatcher-servlet.xml 에서 context:component-scan 으로 스프링에 빈을 등록한다.or 찾는다(?)
+            - 4,5번은 확실하지 않음. 요청 했을 때 해당 주소를 찾지 못하면 dispatcher-servlet.xml 의 문제인데
+              5번의 스프링에 빈을 등록한다는 말이 조금 이상하다.=> 찾아보고 다시 정리
+      *추가로 서버구동 후 아예 요청조차 못받으면 web.xml 을 못 찾는건데, 대부분 Project Structure 을 잘못 설정해서
+       찾지 못하는 경우가 있으니 잊지말자!
+   -->
+
+
     <filter>
         <filter-name>encoding</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
