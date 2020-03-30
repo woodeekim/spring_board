@@ -3,7 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
 <!--Hikari DBCP 를 사용하기 위해서 필요한 설정-->
@@ -29,9 +30,13 @@
         <property name="dataSource" ref="dataSource"></property>
     </bean>
 
-
+    <!--component-scan 과정에서 패키지 안에 있는 빈들을 스프링에 등록한다.-->
     <mybatis-spring:scan base-package="org.woodee.mapper"/>
     <context:component-scan base-package="org.woodee.sample"/>
     <context:component-scan base-package="org.woodee.service" />
+    <context:component-scan base-package="org.woodee.aop"/>
+    <!--autoproxy 를 이용해서 LogAdvice에 설정한 @Before 이 동작-->
+    <aop:aspectj-autoproxy/>
+
 
 </beans>

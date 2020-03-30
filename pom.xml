@@ -187,6 +187,29 @@
             <scope>test</scope>
         </dependency>
 
+        <!--AOP를 위한 설정(1/2)-->
+        <!--스프링의 AOP는 AspectJ라는 라이브러리의 도움을 많이 받는다.-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+        <!--AOP를 위한 설정(2/2)-->
+        <!--
+            - AOP 설정과 관련해서 가장 중요한 라이브러리는
+              AspectJ Weaver 라는 라이브러리다.
+            - 스프링은 AOP 처리가 된 객체를 생성할 때 Aspects Weaver 라이브러리의
+              도움을 받아서 동작한다.
+        -->
+        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+
+
+
 
 
     </dependencies>
