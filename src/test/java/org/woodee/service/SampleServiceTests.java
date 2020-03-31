@@ -28,4 +28,13 @@ public class SampleServiceTests {
     public void testAdd() throws Exception{
         log.info(service.doAdd("123","223"));
     }
+
+    /*
+    * @AfterThrowing 어노테이션을 테스트
+    * - 고의적으로 예외 발생
+    */
+    @Test
+    public void testAddError() throws Exception {
+        log.info(service.doAdd("123","ABC"));
+    }
 }
